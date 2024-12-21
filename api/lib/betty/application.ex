@@ -6,6 +6,7 @@ defmodule Betty.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      {Plug.Cowboy, scheme: :http, plug: Betty.Api, options: [port: 4001]},
       Betty.Repo,
       {Registry, [keys: :unique, name: Betty.EventRegistry]},
       Betty.Boundary.EventSupervisor

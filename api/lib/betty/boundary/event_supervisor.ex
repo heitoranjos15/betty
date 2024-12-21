@@ -1,6 +1,6 @@
 defmodule Betty.Boundary.EventSupervisor do
   use DynamicSupervisor
-  alias Betty.Core.Event
+  alias Betty.Lib.Dto.EventDto
 
   def start_link(opts) do
     DynamicSupervisor.start_link(__MODULE__, opts, name: __MODULE__)
@@ -13,6 +13,7 @@ defmodule Betty.Boundary.EventSupervisor do
   def create_event(data) do
     Event.create(data)
   end
+
 
   def start_event(uuid) do
     event = Event.get(uuid)

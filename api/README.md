@@ -24,3 +24,9 @@ be found at <https://hexdocs.pm/betty_v2>.
 $ Betty.Boundary.EventSupervisor.create_event('2022')
 $ Betty.Boundary.BetManager.insert_bet('2022', %{})
 
+
+
+### Hey man
+Figure out how to create event by api.
+We need to get via json then save on database then create an event.
+do like this, believe me. ~:D

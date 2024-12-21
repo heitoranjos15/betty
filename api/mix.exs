@@ -28,7 +28,8 @@ defmodule Betty.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ecto, "~> 3.10"},
       {:ecto_sql, "~> 3.0-rc.1"},
-      {:postgrex, "~> 0.17"}
+      {:postgrex, "~> 0.17"},
+      {:plug_cowboy, "~> 2.0"} 
     ]
   end
 end
