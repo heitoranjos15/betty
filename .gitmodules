@@ -1,0 +1,6 @@
+[submodule "betty-mother"]
+	path = betty-mother
+	url = https://github.com/heitoranjos15/betty-mother
+[submodule "scout_nfl"]
+	path = scout_nfl
+	url = https://github.com/heitoranjos15/scout_nfl
