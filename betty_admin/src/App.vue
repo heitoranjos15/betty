@@ -9,20 +9,36 @@
               <v-card-title class="text-h5 font-weight-bold">
                 Home Team Matches
                 <v-spacer></v-spacer>
-                <v-autocomplete
-                  v-model="selectedHomeTeam"
-                  :items="teamOptions"
-                  item-title="name"
-                  item-value="externalId"
-                  label="Select Home Team"
-                  clearable
-                  hide-details
-                  class="ml-4"
-                  style="max-width: 300px;"
-                  @update:modelValue="searchHomeTeam"
-                  solo
-                  dense
-                ></v-autocomplete>
+                <v-row>
+                  <v-autocomplete
+                    v-model="selectedHomeTeam"
+                    :items="teamOptions"
+                    item-title="name"
+                    item-value="externalId"
+                    label="Select Home Team"
+                    clearable
+                    hide-details
+                    class="ml-4"
+                    style="max-width: 300px;"
+                    @update:modelValue="searchHomeTeam"
+                    solo
+                    dense
+                  ></v-autocomplete>
+                  <v-autocomplete
+                    v-model="selectedChampionHomeTeam"
+                    :items="championOptions"
+                    item-title="name"
+                    item-value="id"
+                    label="Filter by Champion"
+                    clearable
+                    hide-details
+                    class="ml-4"
+                    style="max-width: 300px;"
+                    solo
+                    id="champion-select"
+                    @update:modelValue="filterByChampion"
+                    ></v-autocomplete>
+                </v-row>
               </v-card-title>
               <v-card-text>
                 <v-data-table
@@ -406,7 +422,7 @@
 </template>
 
 <script>
-import { computed, watchEffect } from 'vue';
+import { computed, watchEffect} from 'vue';
 import { provideApolloClient, useQuery } from '@vue/apollo-composable';
 import { apolloClient } from './plugins/apollo';
 import { GET_GAMES_BY_TEAM_EXTERNAL_ID, GET_TEAMS } from './graphql/queries';
@@ -425,9 +441,620 @@ export default {
         externalId: team.externalId,
       })) || []
     );
-    console.log('Team Options:', teamOptions.value);
+
+    const championOptions = [
+      {
+        id: 'Aatrox',
+        name: 'Aatrox',
+      },
+      {
+        id: 'Ahri',
+        name: 'Ahri',
+      },
+      {
+        id: 'Akali',
+        name: 'Akali',
+      },
+      {
+        id: 'Alistar',
+        name: 'Alistar',
+      },
+      {
+        id: 'Amumu',
+        name: 'Amumu',
+      },
+      {
+        id: 'Anivia',
+        name: 'Anivia',
+      },
+      {
+        id: 'Annie',
+        name: 'Annie',
+      },
+      {
+        id: 'Aphelios',
+        name: 'Aphelios',
+      },
+      {
+        id: 'Ashe',
+        name: 'Ashe',
+      },
+      {
+        id: 'AurelionSol',
+        name: 'Aurelion Sol',
+      },
+      {
+        id: 'Azir',
+        name: 'Azir',
+      },
+      {
+        id: 'Bard',
+        name: 'Bard',
+      },
+      {
+        id: 'Blitzcrank',
+        name: 'Blitzcrank',
+      },
+      {
+        id: 'Brand',
+        name: 'Brand',
+      },
+      {
+        id: 'Braum',
+        name: 'Braum',
+      },
+      {
+        id: 'Caitlyn',
+        name: 'Caitlyn',
+      },
+      {
+        id: 'Camille',
+        name: 'Camille',
+      },
+      {
+        id: 'Cassiopeia',
+        name: 'Cassiopeia',
+      },
+      {
+        id: 'Chogath',
+        name: 'Cho\'Gath',
+      },
+      {
+        id: 'Corki',
+        name: 'Corki',
+      },
+      {
+        id: 'Darius',
+        name: 'Darius',
+      },
+      {
+        id: 'Diana',
+        name: 'Diana',
+      },
+      {
+        id: 'Draven',
+        name: 'Draven',
+      },
+      {
+        id: 'DrMundo',
+        name: 'Dr. Mundo',
+      },
+      {
+        id: 'Ekko',
+        name: 'Ekko',
+      },
+      {
+        id: 'Elise',
+        name: 'Elise',
+      },
+      {
+        id: 'Evelynn',
+        name: 'Evelynn',
+      },
+      {
+        id: 'Ezreal',
+        name: 'Ezreal',
+      },
+      {
+        id: 'Fiddlesticks',
+        name: 'Fiddlesticks',
+      },
+      {
+        id: 'Fiora',
+        name: 'Fiora',
+      },
+      {
+        id: 'Fizz',
+        name: 'Fizz',
+      },
+      {
+        id: 'Galio',
+        name: 'Galio',
+      },
+      {
+        id: 'Gangplank',
+        name: 'Gangplank',
+      },
+      {
+        id: 'Garen',
+        name: 'Garen',
+      },
+      {
+        id: 'Gnar',
+        name: 'Gnar',
+      },
+      {
+        id: 'Gragas',
+        name: 'Gragas',
+      },
+      {
+        id: 'Graves',
+        name: 'Graves',
+      },
+      {
+        id: 'Hecarim',
+        name: 'Hecarim',
+      },
+      {
+        id: 'Heimerdinger',
+        name: 'Heimerdinger',
+      },
+      {
+        id: 'Illaoi',
+        name: 'Illaoi',
+      },
+      {
+        id: 'Irelia',
+        name: 'Irelia',
+      },
+      {
+        id: 'Ivern',
+        name: 'Ivern',
+      },
+      {
+        id: 'Janna',
+        name: 'Janna',
+      },
+      {
+        id: 'JarvanIV',
+        name: 'Jarvan IV',
+      },
+      {
+        id: 'Jax',
+        name: 'Jax',
+      },
+      {
+        id: 'Jayce',
+        name: 'Jayce',
+      },
+      {
+        id: 'Jhin',
+        name: 'Jhin',
+      },
+      {
+        id: 'Jinx',
+        name: 'Jinx',
+      },
+      {
+        id: 'KaiSa',
+        name: 'Kai\'Sa',
+      },
+      {
+        id: 'Kalista',
+        name: 'Kalista',
+      },
+      {
+        id: 'Karma',
+        name: 'Karma',
+      },
+      {
+        id: 'Karthus',
+        name: 'Karthus',
+      },
+      {
+        id: 'Kassadin',
+        name: 'Kassadin',
+      },
+      {
+        id: 'Katarina',
+        name: 'Katarina',
+      },
+      {
+        id: 'Kayle',
+        name: 'Kayle',
+      },
+      {
+        id: 'Kayn',
+        name: 'Kayn',
+      },
+      {
+        id: 'Kennen',
+        name: 'Kennen',
+      },
+      {
+        id: "Khazix",
+        name: "Kha'Zix",
+      },
+      {
+        id: 'Kindred',
+        name: 'Kindred',
+      },
+      {
+        id: 'Kled',
+        name: 'Kled',
+      },
+      {
+        id: "KogMaw",
+        name: "Kog'Maw",
+      },
+      {
+        id: "Leblanc",
+        name: "LeBlanc",
+      },
+      {
+        id: "LeeSin",
+        name: "Lee Sin",
+      },
+      {
+        id: "Leona",
+        name: "Leona",
+      },
+      {
+        id: "Lillia",
+        name: "Lillia",
+      },
+      {
+        id: "Lissandra",
+        name: "Lissandra",
+      },
+      {
+        id: "Lucian",
+        name: "Lucian",
+      },
+      {
+        id: "Lulu",
+        name: "Lulu",
+      },
+      {
+        id: "Lux",
+        name: "Lux",
+      },
+      {
+        id: "Malphite",
+        name: "Malphite",
+      },
+      {
+        id: "Malzahar",
+        name: "Malzahar",
+      },
+      {
+        id: "Maokai",
+        name: "Maokai",
+      },
+      {
+        id: "MasterYi",
+        name: "Master Yi",
+      },
+      {
+        id: "MissFortune",
+        name: "Miss Fortune",
+      },
+      {
+        id: "Mordekaiser",
+        name: "Mordekaiser",
+      },
+      {
+        id: "Morgana",
+        name: "Morgana",
+      },
+      {
+        id: "Nami",
+        name: "Nami",
+      },
+      {
+        id: "Nasus",
+        name: "Nasus",
+      },
+      {
+        id: "Nautilus",
+        name: "Nautilus",
+      },
+      {
+        id: "Neeko",
+        name: "Neeko",
+      },
+      {
+        id: "Nidalee",
+        name: "Nidalee",
+      },
+      {
+        id: "Nocturne",
+        name: "Nocturne",
+      },
+      {
+        id: "NunuWillump",
+        name: "Nunu & Willump",
+      },
+      {
+        id: "Olaf",
+        name: "Olaf",
+      },
+      {
+        id: "Orianna",
+        name: "Orianna",
+      },
+      {
+        id: "Ornn",
+        name: "Ornn",
+      },
+      {
+        id: 'Pantheon',
+        name: 'Pantheon',
+      },
+      {
+        id: 'Poppy',
+        name: 'Poppy',
+      },
+      {
+        id: 'Pyke',
+        name: 'Pyke',
+      },
+      {
+        id: 'Qiyana',
+        name: 'Qiyana',
+      },
+      {
+        id: 'Quinn',
+        name: 'Quinn',
+      },
+      {
+        id: 'Rakan',
+        name: 'Rakan',
+      },
+      {
+        id: 'Rammus',
+        name: 'Rammus',
+      },
+      {
+        id: 'RekSai',
+        name: "Rek'Sai",
+      },
+      {
+        id: 'Renekton',
+        name: 'Renekton',
+      },
+      {
+        id: 'Rengar',
+        name: 'Rengar',
+      },
+      {
+        id: 'Riven',
+        name: 'Riven',
+      },
+      {
+        id: 'Rumble',
+        name: 'Rumble',
+      },
+      {
+        id: 'Ryze',
+        name: 'Ryze',
+      },
+      {
+        id: 'Samira',
+        name: 'Samira',
+      },
+      {
+        id: 'Sejuani',
+        name: 'Sejuani',
+      },
+      {
+        id: 'Senna',
+        name: 'Senna',
+      },
+      {
+        id: 'Seraphine',
+        name: 'Seraphine',
+      },
+      {
+        id: 'Sett',
+        name: 'Sett',
+      },
+      {
+        id: 'Shaco',
+        name: 'Shaco',
+      },
+      {
+        id: 'Shen',
+        name: 'Shen',
+      },
+      {
+        id: 'Shyvana',
+        name: 'Shyvana',
+      },
+      {
+        id: 'Singed',
+        name: 'Singed',
+      },
+      {
+        id: 'Sion',
+        name: 'Sion',
+      },
+      {
+        id: 'Sivir',
+        name: 'Sivir',
+      },
+      {
+        id: 'Skarner',
+        name: 'Skarner',
+      },
+      {
+        id: 'Sona',
+        name: 'Sona',
+      },
+      {
+        id: 'Soraka',
+        name: 'Soraka',
+      },
+      {
+        id: 'Swain',
+        name: 'Swain',
+      },
+      {
+        id: 'Sylas',
+        name: 'Sylas',
+      },
+      {
+        id: 'Syndra',
+        name: 'Syndra',
+      },
+      {
+        id: "TahmKench",
+        name: "Tahm Kench",
+      },
+      {
+        id: "Taliyah",
+        name: "Taliyah",
+      },
+      {
+        id: "Talon",
+        name: "Talon",
+      },
+      {
+        id: "Taric",
+        name: "Taric",
+      },
+      {
+        id: "Teemo",
+        name: "Teemo",
+      },
+      {
+        id: "Thresh",
+        name: "Thresh",
+      },
+      {
+        id: "Tristana",
+        name: "Tristana",
+      },
+      {
+        id: "Trundle",
+        name: "Trundle",
+      },
+      {
+        id: "Tryndamere",
+        name: "Tryndamere",
+      },
+      {
+        id: "TwistedFate",
+        name: "Twisted Fate",
+      },
+      {
+        id: "Twitch",
+        name: "Twitch",
+      },
+      {
+        id: "Udyr",
+        name: "Udyr",
+      },
+      {
+        id: "Urgot",
+        name: "Urgot",
+      },
+      {
+        id: "Varus",
+        name: "Varus",
+      },
+      {
+        id: "Vayne",
+        name: "Vayne",
+      },
+      {
+        id: "Veigar",
+        name: "Veigar",
+      },
+      {
+        id: "Velkoz",
+        name: "Vel'Koz",
+      },
+      {
+        id: "Vi",
+        name: "Vi",
+      },
+      {
+        id: "Viktor",
+        name: "Viktor",
+      },
+      {
+        id: "Vladimir",
+        name: "Vladimir",
+      },
+      {
+        id: "Volibear",
+        name: "Volibear",
+      },
+      {
+        id: "Warwick",
+        name: "Warwick",
+      },
+      {
+        id: "Wukong",
+        name: "Wukong",
+      },
+      {
+        id: 'Xayah',
+        name: 'Xayah',
+      },
+      {
+        id: 'Xerath',
+        name: 'Xerath',
+      },
+      {
+        id: 'XinZhao',
+        name: 'Xin Zhao',
+      },
+      {
+        id: 'Yasuo',
+        name: 'Yasuo',
+      },
+      {
+        id: 'Yone',
+        name: 'Yone',
+      },
+      {
+        id: 'Yorick',
+        name: 'Yorick',
+      },
+      {
+        id: 'Yuumi',
+        name: 'Yuumi',
+      },
+      {
+        id: 'Zac',
+        name: 'Zac',
+      },
+      {
+        id: 'Zed',
+        name: 'Zed',
+      },
+      {
+        id: 'Ziggs',
+        name: 'Ziggs',
+      },
+      {
+        id: 'Zilean',
+        name: 'Zilean',
+      },
+      {
+        id: 'Zoe',
+        name: 'Zoe',
+      },
+      {
+        id: 'Zyra',
+        name: 'Zyra',
+      },
+  ]
     return {
       teamOptions,
+      championOptions,
     };
   },
   data() {
@@ -462,6 +1089,7 @@ export default {
       awayMatches: [],
       selectedHomeTeam: null,
       selectedAwayTeam: null,
+      selectedChampionHomeTeam: null,
       homeTeamSearch: '',
       awayTeamSearch: '',
       homeTeamGames: [],
@@ -604,6 +1232,25 @@ export default {
         this.awayMatches = gameMap || [];
         this.awayLoading = loading?.value;
       });
+    },
+    async filterByChampion(championId) {
+      if (!championId) {
+        // If no champion is selected, reset to all matches
+        if (this.selectedHomeTeam) {
+          await this.searchHomeTeam(this.selectedHomeTeam);
+        }
+        return;
+      }
+      const filterMatches = (matches) => matches.filter(match =>
+        match.redSideChampions.some(champ => champ.name === championId) ||
+        match.blueSideChampions.some(champ => champ.name === championId)
+      );
+      if (this.selectedHomeTeam) {
+        this.homeMatches = filterMatches(this.homeMatches);
+      }
+      if (this.selectedAwayTeam) {
+        this.awayMatches = filterMatches(this.awayMatches);
+      }
     },
   },
 };
